@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnFormaFit — Cuestionario Inicial 1:1</title>
+<style>
+  :root { --az:#1A2B5A;--vd:#1D9E75;--bg:#F8F9FC;--bor:#E2E6EF;--t1:#1A1A2E;--t2:#4A5568;--t3:#9199AD;--rj:#E74C3C;--nr:#E67E22; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;}
+  .header{background:var(--az);padding:20px 16px 24px;text-align:center;}
+  .header img{height:44px;margin-bottom:10px;}
+  .header h1{color:#fff;font-size:20px;font-weight:800;margin-bottom:4px;}
+  .header p{color:rgba(255,255,255,0.75);font-size:13px;}
+  .progress-wrap{background:#fff;border-bottom:1px solid var(--bor);padding:12px 16px;position:sticky;top:0;z-index:10;}
+  .progress-bar{height:4px;background:var(--bor);border-radius:2px;overflow:hidden;margin-bottom:6px;}
+  .progress-fill{height:100%;background:var(--vd);border-radius:2px;transition:width 0.4s ease;}
+  .progress-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;}
+  .container{max-width:600px;margin:0 auto;padding:16px;}
+  .step{display:none;}.step.active{display:block;}
+  .step-header{margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--bor);}
+  .step-num{font-size:11px;font-weight:700;color:var(--vd);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+  .step-title{font-size:20px;font-weight:800;color:var(--az);}
+  .step-sub{font-size:13px;color:var(--t2);margin-top:4px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--t2);margin-bottom:6px;}
+  .field label .req{color:var(--rj);margin-left:2px;}
+  .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--bor);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;color:var(--t1);background:#fff;outline:none;transition:border-color 0.2s;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--az);}
+  .field textarea{resize:vertical;min-height:80px;}
+  .field .hint{font-size:12px;color:var(--t3);margin-top:5px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{padding:8px 14px;border:1.5px solid var(--bor);border-radius:20px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 0.15s;background:#fff;}
+  .pill.on{border-color:var(--az);background:var(--az);color:#fff;}
+  .foto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .foto-slot{aspect-ratio:3/4;border:2px dashed var(--bor);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all 0.2s;position:relative;overflow:hidden;}
+  .foto-slot:hover{border-color:var(--az);background:#F0F4FF;}
+  .foto-slot.done{border-style:solid;border-color:var(--vd);}
+  .foto-slot img{width:100%;height:100%;object-fit:cover;position:absolute;}
+  .foto-slot .lbl{font-size:12px;font-weight:700;color:var(--t3);margin-top:6px;text-align:center;padding:0 8px;}
+  .foto-slot .ico{font-size:28px;}
+  .foto-slot .check{position:absolute;top:6px;right:6px;background:var(--vd);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;}
+  .foto-slot .del{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.5);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;cursor:pointer;z-index:2;}
+  .instrucciones{background:#EEF3FA;border-radius:10px;padding:14px;margin-bottom:16px;}
+  .instrucciones h4{font-size:13px;font-weight:700;color:var(--az);margin-bottom:8px;}
+  .instrucciones ul{padding-left:16px;}
+  .instrucciones li{font-size:13px;color:var(--t2);margin-bottom:4px;line-height:1.4;}
+  .medidas-wrap{display:flex;gap:14px;align-items:flex-start;}
+  .medidas-campos{flex:1;}
+  .medidas-img{width:90px;flex-shrink:0;}
+  .medidas-img img{width:100%;border-radius:8px;}
+  .medida-field{margin-bottom:10px;}
+  .medida-field label{font-size:12px;font-weight:700;color:var(--t2);display:block;margin-bottom:3px;}
+  .medida-field input{width:100%;border:1.5px solid var(--bor);border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;color:var(--az);font-weight:700;outline:none;}
+  .medida-field input:focus{border-color:var(--az);}
+  .nav-btns{display:flex;gap:10px;margin-top:24px;padding-top:16px;border-top:1px solid var(--bor);}
+  .btn{padding:13px 20px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;flex:1;transition:all 0.15s;font-family:inherit;}
+  .btn-back{background:#fff;border:1.5px solid var(--bor);color:var(--t2);}
+  .btn-back:hover{border-color:var(--az);color:var(--az);}
+  .btn-next{background:var(--az);color:#fff;}
+  .btn-next:hover{background:#142248;}
+  .btn-submit{background:var(--vd);color:#fff;}
+  .btn-submit:hover{background:#17865f;}
+  .skip-note{font-size:12px;color:var(--t3);text-align:center;margin-top:10px;}
+  .rgpd{display:flex;gap:10px;align-items:flex-start;margin-top:16px;}
+  .rgpd input[type=checkbox]{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--az);cursor:pointer;}
+  .rgpd label{font-size:12px;color:var(--t2);line-height:1.5;cursor:pointer;}
+  .rgpd a{color:var(--az);}
+  .sent{display:none;text-align:center;padding:40px 20px;}
+  .sent.show{display:block;}
+  .sent-ico{font-size:56px;margin-bottom:16px;}
+  .sent h2{font-size:22px;font-weight:800;color:var(--az);margin-bottom:8px;}
+  .sent p{font-size:14px;color:var(--t2);line-height:1.6;}
+  .err-msg{background:#FDF0EF;border:1px solid var(--rj);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--rj);margin-bottom:14px;display:none;}
+  .err-msg.show{display:block;}
+  @media(max-width:400px){.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="https://raw.githubusercontent.com/EnFormaFit/enformafit-app/main/logo.png" alt="EnFormaFit" onerror="this.style.display='none'">
+  <h1>Cuestionario inicial — Coaching 1:1</h1>
+  <p>Tómate el tiempo que necesites. Tus respuestas me permiten preparar un plan 100% tuyo.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:12.5%"></div></div>
+  <div class="progress-label" id="progLabel">Paso 1 de 8 — Datos personales</div>
+</div>
+
+<div class="container">
+  <div class="err-msg" id="errMsg"></div>
+
+  <!-- ═══ STEP 1: Datos personales ═══ -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-num">Paso 1 de 8</div>
+      <div class="step-title">Datos personales</div>
+      <div class="step-sub">Puedes guardar y continuar más tarde — tus respuestas se guardan automáticamente.</div>
+    </div>
+    <div class="field"><label>Nombre y apellidos <span class="req">*</span></label><input type="text" id="nombre" autocomplete="name" placeholder="Nombre completo"></div>
+    <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="email" placeholder="tu@email.com"><div class="hint">Aquí recibirás tus credenciales de acceso</div></div>
+    <div class="grid2">
+      <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="fecha_nac"></div>
+      <div class="field"><label>Teléfono</label><input type="tel" id="telefono" placeholder="612 345 678"></div>
+    </div>
+    <div class="field"><label>Dirección</label><input type="text" id="direccion" placeholder="Calle, número, piso..."></div>
+    <div class="grid2">
+      <div class="field"><label>Código postal</label><input type="text" id="cp" placeholder="28001"></div>
+      <div class="field"><label>Ciudad</label><input type="text" id="ciudad" placeholder="Madrid"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Peso actual en ayunas (kg) <span class="req">*</span></label><input type="number" id="peso" placeholder="80" step="0.1" min="40" max="250"></div>
+      <div class="field"><label>Altura (cm) <span class="req">*</span></label><input type="number" id="altura" placeholder="175" min="140" max="220"></div>
+    </div>
+    <div class="nav-btns"><button class="btn btn-next" onclick="goTo(2)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 2: Objetivos y estilo de vida ═══ -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-num">Paso 2 de 8</div>
+      <div class="step-title">Objetivos y estilo de vida</div>
+    </div>
+    <div class="field">
+      <label>Objetivo principal <span class="req">*</span></label>
+      <select id="objetivo"><option value="">Selecciona...</option><option value="def">Perder grasa y definir (bajar peso o definición muscular)</option><option value="sup">Ganar masa muscular</option></select>
+    </div>
+    <div class="field"><label>¿Cuáles son tus objetivos de aquí a 3 meses? ¿Y de aquí a un año? <span class="req">*</span></label><textarea id="objetivos_detallado" placeholder="Sé concreto: quiero perder X kg, mejorar en X, recuperar mi energía..."></textarea></div>
+    <div class="field">
+      <label>Actividad diaria aparte del entrenamiento <span class="req">*</span></label>
+      <select id="actividad"><option value="">Selecciona...</option><option value="1.2">Sedentario — trabajo de oficina o sentado</option><option value="1.375">Ligeramente activo — profesor, algunos paseos</option><option value="1.55">Moderadamente activo — camarero, trabajo de pie</option><option value="1.725">Muy activo — trabajo físico intenso</option></select>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Horas de sueño al día (media) <span class="req">*</span></label><select id="horas_sueno"><option value="">...</option><option value="menos5">Menos de 5h</option><option value="5-6">5-6h</option><option value="6-7">6-7h</option><option value="7-8">7-8h</option><option value="mas8">Más de 8h</option></select></div>
+      <div class="field"><label>Nivel de estrés habitual <span class="req">*</span></label><select id="estres"><option value="">...</option><option value="bajo">Bajo</option><option value="moderado">Moderado</option><option value="alto">Alto</option><option value="muy_alto">Muy alto</option></select></div>
+    </div>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(1)">← Atrás</button><button class="btn btn-next" onclick="goTo(3)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 3: Entrenamiento ═══ -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-num">Paso 3 de 8</div>
+      <div class="step-title">Entrenamiento</div>
+    </div>
+    <div class="field"><label>¿Cuánto tiempo dispones para entrenar? Dime días disponibles y tiempo por día <span class="req">*</span></label><textarea id="disponibilidad_entreno" placeholder="Ej: Lunes, miércoles y viernes 60 minutos. Sábados 45 min..."></textarea></div>
+    <div class="field">
+      <label>Días de entrenamiento a la semana <span class="req">*</span></label>
+      <div class="pills" id="diasPills"><span class="pill" data-v="2">2</span><span class="pill" data-v="3">3</span><span class="pill" data-v="4">4</span><span class="pill" data-v="5">5</span><span class="pill" data-v="6">6</span></div>
+    </div>
+    <div class="field">
+      <label>Tiempo por sesión <span class="req">*</span></label>
+      <div class="pills" id="tiempoPills"><span class="pill" data-v="30">30 min</span><span class="pill" data-v="45">45 min</span><span class="pill" data-v="60">60 min</span><span class="pill" data-v="75">75 min</span><span class="pill" data-v="90">90+ min</span></div>
+    </div>
+    <div class="field">
+      <label>Lugar y material <span class="req">*</span></label>
+      <div class="pills" id="lugarPills"><span class="pill" data-v="gym">Gimnasio completo</span><span class="pill" data-v="casa_mancuernas">Casa con mancuernas</span><span class="pill" data-v="casa_bandas">Casa con bandas</span><span class="pill" data-v="casa_sin">Casa sin material</span><span class="pill" data-v="mixto">Mixto</span></div>
+    </div>
+    <div class="field">
+      <label>Nivel / Experiencia <span class="req">*</span></label>
+      <div class="pills" id="nivelPills"><span class="pill" data-v="0">Principiante (0-1 año)</span><span class="pill" data-v="1">Intermedio (1-3 años)</span><span class="pill" data-v="2">Avanzado (+3 años)</span></div>
+    </div>
+    <div class="field"><label>¿Cómo ha sido tu entrenamiento en los últimos meses? Días, qué músculos trabajabas, rutinas... <span class="req">*</span></label><textarea id="historial_entreno" placeholder="Ej: Entrenaba 3 días PPL, perdí la constancia en verano, ahora llevo 2 meses sin entrenar..."></textarea></div>
+    <div class="field"><label>¿Qué ejercicios te gustan más? ¿Cuáles te dan problemas o no quieres hacer?</label><textarea id="preferencias_ejercicios" placeholder="Ej: Me encanta el peso muerto, pero no puedo hacer sentadilla profunda por la rodilla..."></textarea></div>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn btn-next" onclick="goTo(4)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4: Nutrición ═══ -->
+  <div class="step" id="step4">
+    <div class="step-header">
+      <div class="step-num">Paso 4 de 8</div>
+      <div class="step-title">Nutrición</div>
+    </div>
+    <div class="field">
+      <label>Comidas al día <span class="req">*</span></label>
+      <div class="pills" id="comidasPills"><span class="pill" data-v="2">2</span><span class="pill" data-v="3">3</span><span class="pill" data-v="4">4</span><span class="pill" data-v="5">5</span><span class="pill" data-v="6">6</span></div>
+    </div>
+    <div class="field"><label>¿Cómo consideras que es tu alimentación hasta ahora? Escribe todo lo que comiste ayer desde que te levantaste hasta que te acostaste <span class="req">*</span></label><textarea id="alimentacion_actual" style="min-height:120px" placeholder="Ej: Desayuno 8h — café con leche y tostada con aceite. Comida 14h — arroz con pollo. Cena 21h — tortilla y ensalada..."></textarea></div>
+    <div class="field"><label>Alimentos que no puedes o no quieres comer</label><input type="text" id="excluir_alimentos" placeholder="Ej: marisco, lácteos, frutos secos... o deja en blanco"><div class="hint">Intolerancias, alergias o preferencias personales</div></div>
+    <div class="field"><label>¿Tienes alguna intolerancia, alergia o has tenido alguna mala relación con la comida?</label><textarea id="intolerancia_comida" placeholder="Sé todo lo sincero que puedas. Está en un entorno confidencial."></textarea></div>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn btn-next" onclick="goTo(5)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 5: Salud ═══ -->
+  <div class="step" id="step5">
+    <div class="step-header">
+      <div class="step-num">Paso 5 de 8</div>
+      <div class="step-title">Salud y lesiones</div>
+    </div>
+    <div class="field"><label>¿Tienes alguna patología o enfermedad por la que se pueda ver comprometida tu salud al hacer ejercicio? Resumen de tu historial médico</label><textarea id="patologia" placeholder="Ej: diabetes tipo 2, hipertensión, hipotiroidismo... o escribe Ninguna"></textarea></div>
+    <div class="field"><label>¿Tomas alguna medicación?</label><textarea id="medicacion" placeholder="Ej: Atorvastatina 20mg, Metformina... o escribe No"></textarea></div>
+    <div class="field"><label>¿Qué dolores, molestias y lesiones has tenido entrenando? <span class="req">*</span></label><textarea id="lesiones" placeholder="Ej: tendinitis en hombro derecho (2022, ya recuperado), dolor lumbar ocasional..."></textarea></div>
+    <div class="field"><label>Ejercicios a excluir del plan por lesiones o preferencia</label><input type="text" id="excluir_ejercicios" placeholder="Ej: press militar, sentadilla... o deja en blanco"></div>
+    <div class="field"><label>Fecha deseada de inicio</label><input type="date" id="fecha_inicio"><div class="hint">Tu entrenador la confirmará antes de activar el plan</div></div>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn btn-next" onclick="goTo(6)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 6: Mentalidad ═══ -->
+  <div class="step" id="step6">
+    <div class="step-header">
+      <div class="step-num">Paso 6 de 8</div>
+      <div class="step-title">Mentalidad</div>
+      <div class="step-sub">Esta sección me ayuda a entenderte como persona, no solo como atleta. Responde con sinceridad.</div>
+    </div>
+    <div class="field"><label>¿Cuáles crees que son tus puntos débiles y tus puntos fuertes? ¿Cómo te definirías como persona? Tanto físicos como psicológicos <span class="req">*</span></label><textarea id="mentalidad" style="min-height:100px" placeholder="Ej: Soy constante cuando me propongo algo, pero me cuesta mucho la disciplina con la comida en situaciones sociales..."></textarea></div>
+    <div class="field"><label>¿Has trabajado antes con un entrenador? Si es sí, ¿qué tal la experiencia y por qué ya no continúas?</label><textarea id="historial_entrenador" placeholder="Ej: Sí, trabajé con uno online 3 meses pero no había seguimiento real..."></textarea></div>
+    <div class="field"><label>¿Qué buscas en un entrenador? ¿Qué es lo más importante para ti en este proceso?</label><textarea id="que_busca_entrenador" placeholder="Ej: Alguien que me entienda, que no me dé un plan genérico, que esté disponible cuando lo necesito..."></textarea></div>
+    <div class="field"><label>Escribe algo que consideres importante y que no te hayamos preguntado. Puedes abrirte con lo que necesites.</label><textarea id="comentarios" placeholder="Cualquier cosa que quieras que sepa antes de empezar a trabajar contigo."></textarea></div>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn btn-next" onclick="goTo(7)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 7: Medidas corporales ═══ -->
+  <div class="step" id="step7">
+    <div class="step-header">
+      <div class="step-num">Paso 7 de 8</div>
+      <div class="step-title">Medidas corporales</div>
+      <div class="step-sub">Tómatelas mañana por la mañana en ayunas. Si no las tienes ahora, tus datos quedan guardados y puedes volver.</div>
+    </div>
+    <div class="instrucciones">
+      <h4>📏 Cómo tomarte las medidas</h4>
+      <ul>
+        <li>Mídete por la mañana en ayunas, sin ropa</li>
+        <li>Usa una cinta métrica de coser (cualquier cinta flexible)</li>
+        <li>La cinta debe estar horizontal, paralela al suelo, sin apretar</li>
+        <li>Para brazos y muslos, mide en la zona más amplia con el músculo relajado</li>
+        <li>Para los gemelos, contraídos (de puntillas)</li>
+        <li>Guíate con la imagen de referencia para saber dónde exactamente</li>
+      </ul>
+    </div>
+    <div class="medidas-wrap">
+      <div class="medidas-campos">
+        <div class="medida-field"><label>Hombros — zona más amplia (cm)</label><input type="number" id="m_hombros" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Pecho — zona más amplia (cm)</label><input type="number" id="m_pecho" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Brazo derecho contraído — zona más amplia (cm)</label><input type="number" id="m_brazo_d" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Brazo izquierdo contraído — zona más amplia (cm)</label><input type="number" id="m_brazo_i" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Abdomen — altura del ombligo, relajado (cm)</label><input type="number" id="m_abdomen" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Muslo derecho relajado — zona más amplia (cm)</label><input type="number" id="m_muslo_d" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Muslo izquierdo relajado — zona más amplia (cm)</label><input type="number" id="m_muslo_i" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Gemelo derecho contraído — zona más amplia (cm)</label><input type="number" id="m_gemelo_d" placeholder="—" step="0.1"></div>
+        <div class="medida-field"><label>Gemelo izquierdo contraído — zona más amplia (cm)</label><input type="number" id="m_gemelo_i" placeholder="—" step="0.1"></div>
+      </div>
+      <div class="medidas-img">
+        <img src="https://raw.githubusercontent.com/EnFormaFit/enformafit-app/main/medidas_cuerpo.png" alt="Guía de medidas" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <p class="skip-note">Opcional ahora — puedes guardar y volver mañana en ayunas.</p>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(6)">← Atrás</button><button class="btn btn-next" onclick="goTo(8)">Siguiente →</button></div>
+  </div>
+
+  <!-- ═══ STEP 8: Fotos ═══ -->
+  <div class="step" id="step8">
+    <div class="step-header">
+      <div class="step-num">Paso 8 de 8</div>
+      <div class="step-title">Fotos de inicio</div>
+      <div class="step-sub">Son tu punto de partida. Si no las tienes ahora, envía el formulario y mándalas mañana en ayunas.</div>
+    </div>
+    <div class="instrucciones">
+      <h4>📸 Cómo tomarte las fotos</h4>
+      <ul>
+        <li><strong>Cuándo:</strong> por la mañana en ayunas, con el estómago vacío</li>
+        <li><strong>Ropa:</strong> bañador o ropa interior — necesitamos ver el cuerpo completo</li>
+        <li><strong>Fondo:</strong> pared lisa o fondo blanco, buena luz natural (junto a una ventana)</li>
+        <li><strong>Cámara:</strong> apoyada en una superficie o con temporizador, a media altura (entre abdomen y pecho). <strong>Nunca en la mano</strong></li>
+        <li><strong>Truco:</strong> grábate un vídeo girando 360° y haz cuatro capturas de las posiciones</li>
+        <li><strong>Posiciones:</strong> de frente, de espaldas y los dos perfiles</li>
+        <li>Usaremos siempre el mismo sitio y la misma luz en cada revisión para que la comparación sea real</li>
+      </ul>
+    </div>
+    <div class="foto-grid">
+      <div class="foto-slot" id="fslot_0" onclick="triggerFoto(0)"><div class="ico">📷</div><div class="lbl">Frente</div></div>
+      <div class="foto-slot" id="fslot_1" onclick="triggerFoto(1)"><div class="ico">📷</div><div class="lbl">Espalda</div></div>
+      <div class="foto-slot" id="fslot_2" onclick="triggerFoto(2)"><div class="ico">📷</div><div class="lbl">Perfil izquierdo</div></div>
+      <div class="foto-slot" id="fslot_3" onclick="triggerFoto(3)"><div class="ico">📷</div><div class="lbl">Perfil derecho</div></div>
+    </div>
+    <input type="file" accept="image/*" id="fotoInput" style="display:none" onchange="loadFoto(this)">
+    <div class="rgpd">
+      <input type="checkbox" id="rgpd">
+      <label for="rgpd">Acepto la <a href="#" onclick="return false">política de privacidad</a> y autorizo el tratamiento de mis datos personales y fotografías con fines de seguimiento de mi transformación física. Los datos no se compartirán con terceros.</label>
+    </div>
+    <p class="skip-note" style="margin-top:8px">Las fotos son opcionales ahora. El formulario se envía igualmente.</p>
+    <div class="nav-btns"><button class="btn btn-back" onclick="goTo(7)">← Atrás</button><button class="btn btn-submit" id="btnSubmit" onclick="enviar()">Enviar cuestionario ✓</button></div>
+  </div>
+
+  <div class="sent" id="sentDiv">
+    <div class="sent-ico">✅</div>
+    <h2>¡Cuestionario recibido!</h2>
+    <p>Muchas gracias por haberlo rellenado con detalle — es un gran paso.<br><br>
+    Álvaro revisará tus respuestas personalmente y se pondrá en contacto contigo en breve para confirmar la fecha de inicio y enviarte el acceso a la app.<br><br>
+    Si tienes cualquier duda, escríbele a <strong>@alvaro_casal_</strong> por Instagram.</p>
+  </div>
+</div>
+
+<script>
+const BACKEND = 'https://enformafit-backend-production.up.railway.app';
+const STORAGE_KEY = 'ef_form_1a1_v1';
+const TOTAL = 8;
+
+let ST = {
+  step:1, nombre:'',email:'',fecha_nac:'',telefono:'',direccion:'',cp:'',ciudad:'',
+  peso:'',altura:'',objetivo:'',objetivos_detallado:'',actividad:'',horas_sueno:'',estres:'',
+  dias_entreno:null,tiempo_ent:null,lugar:null,nivel:null,
+  disponibilidad_entreno:'',historial_entreno:'',preferencias_ejercicios:'',
+  comidas:null,alimentacion_actual:'',excluir_alimentos:'',intolerancia_comida:'',
+  patologia:'',medicacion:'',lesiones:'',excluir_ejercicios:'',fecha_inicio:'',
+  mentalidad:'',historial_entrenador:'',que_busca_entrenador:'',comentarios:'',
+  medidas:{},fotos:[null,null,null,null],
+};
+let fotoIdx=0;
+
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(ST));}catch(e){}}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+    Object.assign(ST,d);
+    const textIds=['nombre','email','fecha_nac','telefono','direccion','cp','ciudad','peso','altura',
+      'objetivos_detallado','horas_sueno','estres','disponibilidad_entreno','historial_entreno',
+      'preferencias_ejercicios','alimentacion_actual','excluir_alimentos','intolerancia_comida',
+      'patologia','medicacion','lesiones','excluir_ejercicios','fecha_inicio',
+      'mentalidad','historial_entrenador','que_busca_entrenador','comentarios'];
+    const stKeys=['nombre','email','fecha_nac','telefono','direccion','cp','ciudad','peso','altura',
+      'objetivos_detallado','horas_sueno','estres','disponibilidad_entreno','historial_entreno',
+      'preferencias_ejercicios','alimentacion_actual','excluir_alimentos','intolerancia_comida',
+      'patologia','medicacion','lesiones','excluir_ejercicios','fecha_inicio',
+      'mentalidad','historial_entrenador','que_busca_entrenador','comentarios'];
+    textIds.forEach((id,i)=>{const el=document.getElementById(id);if(el&&ST[stKeys[i]])el.value=ST[stKeys[i]];});
+    // selects
+    ['objetivo','actividad'].forEach(id=>{const el=document.getElementById(id);if(el&&ST[id])el.value=ST[id];});
+    if(ST.dias_entreno)selectPill('diasPills',ST.dias_entreno);
+    if(ST.tiempo_ent)selectPill('tiempoPills',ST.tiempo_ent);
+    if(ST.lugar)selectPill('lugarPills',ST.lugar);
+    if(ST.nivel!==null&&ST.nivel!==undefined)selectPill('nivelPills',ST.nivel);
+    if(ST.comidas)selectPill('comidasPills',ST.comidas);
+    Object.entries(ST.medidas||{}).forEach(([k,v])=>{const el=document.getElementById('m_'+k);if(el)el.value=v;});
+    (ST.fotos||[]).forEach((f,i)=>{if(f)renderFoto(i,f);});
+  }catch(e){}
+}
+
+function initPills(){
+  document.querySelectorAll('.pills').forEach(container=>{
+    container.querySelectorAll('.pill').forEach(pill=>{
+      pill.addEventListener('click',()=>{
+        container.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+        pill.classList.add('on');
+        const key=container.id.replace('Pills','');
+        const val=pill.dataset.v;
+        if(key==='dias'){ST.dias_entreno=parseInt(val);}
+        else if(key==='tiempo'){ST.tiempo_ent=parseInt(val);}
+        else if(key==='lugar'){ST.lugar=val;}
+        else if(key==='nivel'){ST.nivel=parseInt(val);}
+        else if(key==='comidas'){ST.comidas=parseInt(val);}
+        save();
+      });
+    });
+  });
+}
+function selectPill(cid,val){
+  const c=document.getElementById(cid);if(!c)return;
+  c.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.dataset.v==val));
+}
+
+function initInputSave(){
+  const ids=['nombre','email','fecha_nac','telefono','direccion','cp','ciudad','peso','altura',
+    'objetivos_detallado','horas_sueno','estres','disponibilidad_entreno','historial_entreno',
+    'preferencias_ejercicios','alimentacion_actual','excluir_alimentos','intolerancia_comida',
+    'patologia','medicacion','lesiones','excluir_ejercicios','fecha_inicio',
+    'mentalidad','historial_entrenador','que_busca_entrenador','comentarios','objetivo','actividad'];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',()=>{ST[id]=el.value;save();});
+  });
+  ['hombros','pecho','brazo_d','brazo_i','abdomen','muslo_d','muslo_i','gemelo_d','gemelo_i'].forEach(m=>{
+    const el=document.getElementById('m_'+m);
+    if(el)el.addEventListener('input',()=>{
+      if(el.value)ST.medidas[m]=parseFloat(el.value);else delete ST.medidas[m];save();
+    });
+  });
+}
+
+function triggerFoto(idx){fotoIdx=idx;document.getElementById('fotoInput').click();}
+function loadFoto(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{ST.fotos[fotoIdx]=e.target.result;save();renderFoto(fotoIdx,e.target.result);};
+  r.readAsDataURL(f);inp.value='';
+}
+function renderFoto(idx,src){
+  const slot=document.getElementById('fslot_'+idx);if(!slot)return;
+  const labels=['Frente','Espalda','Perfil izquierdo','Perfil derecho'];
+  slot.innerHTML=`<img src="${src}" alt="${labels[idx]}"><div class="check">✓</div><div class="del" onclick="event.stopPropagation();delFoto(${idx})">✕</div>`;
+  slot.classList.add('done');slot.onclick=()=>triggerFoto(idx);
+}
+function delFoto(idx){
+  ST.fotos[idx]=null;save();
+  const labels=['Frente','Espalda','Perfil izquierdo','Perfil derecho'];
+  const slot=document.getElementById('fslot_'+idx);
+  slot.classList.remove('done');
+  slot.innerHTML=`<div class="ico">📷</div><div class="lbl">${labels[idx]}</div>`;
+  slot.onclick=()=>triggerFoto(idx);
+}
+
+const LABELS=['','Datos personales','Objetivos y estilo de vida','Entrenamiento','Nutrición','Salud y lesiones','Mentalidad','Medidas corporales','Fotos de inicio'];
+function goTo(n){
+  if(!validate(ST.step))return;
+  document.getElementById('step'+ST.step).classList.remove('active');
+  ST.step=n;save();
+  document.getElementById('step'+n).classList.add('active');
+  document.getElementById('progFill').style.width=(n/TOTAL*100)+'%';
+  document.getElementById('progLabel').textContent=`Paso ${n} de ${TOTAL} — ${LABELS[n]}`;
+  window.scrollTo(0,0);hideErr();
+}
+
+function v(id){return(document.getElementById(id)?.value||'').trim();}
+function validate(step){
+  hideErr();
+  if(step===1){
+    if(!v('nombre'))return showErr('El nombre es obligatorio');
+    if(!v('email')||!v('email').includes('@'))return showErr('Introduce un email válido');
+    if(!v('fecha_nac'))return showErr('La fecha de nacimiento es obligatoria');
+    if(!v('peso'))return showErr('Introduce tu peso actual');
+    if(!v('altura'))return showErr('Introduce tu altura');
+  }
+  if(step===2){
+    if(!v('objetivo'))return showErr('Selecciona tu objetivo principal');
+    if(!v('objetivos_detallado'))return showErr('Cuéntame tus objetivos a 3 meses y 1 año');
+    if(!v('actividad'))return showErr('Selecciona tu nivel de actividad diaria');
+    if(!v('horas_sueno'))return showErr('Selecciona tus horas de sueño habituales');
+    if(!v('estres'))return showErr('Selecciona tu nivel de estrés habitual');
+  }
+  if(step===3){
+    if(!ST.dias_entreno)return showErr('Selecciona los días de entrenamiento');
+    if(!ST.tiempo_ent)return showErr('Selecciona el tiempo por sesión');
+    if(!ST.lugar)return showErr('Selecciona dónde entrenas');
+    if(ST.nivel===null||ST.nivel===undefined)return showErr('Selecciona tu nivel de experiencia');
+    if(!v('historial_entreno'))return showErr('Cuéntame cómo ha sido tu entrenamiento estos últimos meses');
+  }
+  if(step===4){
+    if(!ST.comidas)return showErr('Selecciona cuántas comidas haces al día');
+    if(!v('alimentacion_actual'))return showErr('Cuéntame qué comiste ayer desde que te levantaste');
+  }
+  if(step===5){
+    if(!v('lesiones'))return showErr('Indica tus lesiones o escribe Ninguna');
+  }
+  if(step===6){
+    if(!v('mentalidad'))return showErr('Cuéntame tus puntos fuertes y débiles');
+  }
+  return true;
+}
+function showErr(msg){const el=document.getElementById('errMsg');el.textContent=msg;el.classList.add('show');window.scrollTo(0,0);return false;}
+function hideErr(){document.getElementById('errMsg').classList.remove('show');}
+
+async function comprimirFoto(base64){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=800;let w=img.width,h=img.height;
+      if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',0.75));
+    };
+    img.onerror=()=>resolve(null);img.src=base64;
+  });
+}
+
+async function enviar(){
+  if(!document.getElementById('rgpd').checked)return showErr('Debes aceptar la política de privacidad para continuar');
+  const btn=document.getElementById('btnSubmit');btn.textContent='Enviando...';btn.disabled=true;hideErr();
+  const fotosComprimidas=await Promise.all(ST.fotos.map(f=>f?comprimirFoto(f):null));
+  const body={
+    nombre:v('nombre'),email:v('email'),tipo:'1a1',
+    fecha_nacimiento:v('fecha_nac'),
+    peso:parseFloat(v('peso')),altura:parseFloat(v('altura')),
+    objetivo:v('objetivo'),actividad:parseFloat(v('actividad')),
+    comidas:ST.comidas||3,dias_entreno:ST.dias_entreno||3,
+    lugar:ST.lugar||'gym',tiempo_ent:ST.tiempo_ent||45,nivel:ST.nivel??1,
+    lesiones:v('lesiones')||null,
+    excluir_alimentos:v('excluir_alimentos')?v('excluir_alimentos').split(',').map(s=>s.trim()).filter(Boolean):[],
+    patologia:v('patologia')||null,
+    fecha_inicio_deseada:v('fecha_inicio')||null,
+    // campos 1:1 extra
+    direccion:v('direccion')||null,cp:v('cp')||null,ciudad:v('ciudad')||null,
+    telefono:v('telefono')||null,
+    objetivos_detallado:v('objetivos_detallado')||null,
+    horas_sueno:v('horas_sueno')||null,estres:v('estres')||null,
+    disponibilidad_entreno:v('disponibilidad_entreno')||null,
+    historial_entreno:v('historial_entreno')||null,
+    preferencias_ejercicios:v('preferencias_ejercicios')||null,
+    alimentacion_actual:v('alimentacion_actual')||null,
+    intolerancia_comida:v('intolerancia_comida')||null,
+    medicacion:v('medicacion')||null,
+    excluir_ejercicios:v('excluir_ejercicios')||null,
+    mentalidad:v('mentalidad')||null,
+    historial_entrenador:v('historial_entrenador')||null,
+    que_busca_entrenador:v('que_busca_entrenador')||null,
+    comentarios:v('comentarios')||null,
+    medidas_s0:Object.keys(ST.medidas).length?ST.medidas:null,
+    fotos_s0_b64:fotosComprimidas.filter(Boolean).length?fotosComprimidas:null,
+    rgpd:true,
+  };
+  try{
+    const resp=await fetch(`${BACKEND}/api/clientes/publico`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data=await resp.json();
+    if(!resp.ok){btn.textContent='Enviar cuestionario ✓';btn.disabled=false;return showErr(data.error||'Error al enviar. Inténtalo de nuevo.');}
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('step8').style.display='none';
+    document.getElementById('sentDiv').classList.add('show');
+    window.scrollTo(0,0);
+  }catch(e){btn.textContent='Enviar cuestionario ✓';btn.disabled=false;showErr('Error de conexión. Comprueba tu internet.');}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{initPills();initInputSave();load();});
+</script>
+</body>
+</html>
