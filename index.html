@@ -96,7 +96,7 @@
     </div>
     <div class="field"><label>Nombre y apellidos <span class="req">*</span></label><input type="text" id="nombre" autocomplete="name" placeholder="Nombre completo"></div>
     <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="email" placeholder="tu@email.com"><div class="hint">Aquí recibirás el acceso a la app</div></div>
-    <div class="field"><label>Teléfono</label><input type="tel" id="telefono" placeholder="612 345 678" autocomplete="tel"></div>
+    <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="telefono" placeholder="612 345 678" autocomplete="tel"></div>
     <div class="grid2">
       <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="fecha_nac"></div>
       <div class="field"><label>Objetivo principal <span class="req">*</span></label>
@@ -193,8 +193,8 @@
       <div class="pills" id="comidasPills"><span class="pill" data-v="2">2</span><span class="pill" data-v="3">3</span><span class="pill" data-v="4">4</span><span class="pill" data-v="5">5</span><span class="pill" data-v="6">6</span></div>
     </div>
     <div class="field"><label>Escribe todo lo que comiste ayer desde que te levantaste hasta que te acostaste <span class="req">*</span></label><textarea id="alimentacion_actual" style="min-height:110px" placeholder="Desayuno 8h — café con leche y tostada. Comida 14h — arroz con pollo. Cena 21h — tortilla..."></textarea></div>
-    <div class="field"><label>Alimentos que no puedes o no quieres comer (intolerancias, alergias, preferencias)</label><input type="text" id="excluir_alimentos" placeholder="Ej: marisco, lácteos, frutos secos... o deja en blanco"></div>
-    <div class="field"><label>¿Has tenido en algún momento una mala relación con la comida? ¿Algo que quieras contarme al respecto?</label><textarea id="intolerancia_comida" placeholder="Sé todo lo sincero que quieras. Es un espacio confidencial."></textarea></div>
+    <div class="field"><label>Alimentos a excluir (intolerancias, alergias, preferencias o escribe Ninguno) <span class="req">*</span></label><input type="text" id="excluir_alimentos" placeholder="Ej: marisco, lácteos, frutos secos... o deja en blanco"></div>
+    <div class="field"><label>¿Has tenido alguna mala relación con la comida? (escribe No si no aplica) ¿Algo que quieras contarme al respecto?</label><textarea id="intolerancia_comida" placeholder="Sé todo lo sincero que quieras. Es un espacio confidencial."></textarea></div>
     <div class="nav-btns"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn btn-next" onclick="goTo(5)">Siguiente →</button></div>
   </div>
 
@@ -204,8 +204,8 @@
       <div class="step-num">Paso 5 de 8</div>
       <div class="step-title">Salud y lesiones</div>
     </div>
-    <div class="field"><label>¿Tienes alguna patología o enfermedad por la que se pueda ver comprometida tu salud al hacer ejercicio?</label><textarea id="patologia" placeholder="Resumen de tu historial médico relevante... o escribe Ninguna"></textarea></div>
-    <div class="field"><label>¿Tomas alguna medicación?</label><textarea id="medicacion" placeholder="Ej: Atorvastatina 20mg, Metformina... o escribe No"></textarea></div>
+    <div class="field"><label>¿Tienes alguna patología o enfermedad relevante? (escribe Ninguna si no hay) <span class="req">*</span></label><textarea id="patologia" placeholder="Resumen de tu historial médico relevante... o escribe Ninguna"></textarea></div>
+    <div class="field"><label>¿Tomas alguna medicación? (escribe No si no tomas) <span class="req">*</span></label><textarea id="medicacion" placeholder="Ej: Atorvastatina 20mg, Metformina... o escribe No"></textarea></div>
     <div class="field"><label>¿Qué dolores, molestias o lesiones has tenido entrenando? <span class="req">*</span></label><textarea id="lesiones" placeholder="Ej: tendinitis hombro derecho (2022, recuperado), dolor lumbar ocasional... o escribe Ninguna"></textarea></div>
     <div class="field"><label>Ejercicios a excluir por lesiones o preferencia</label><input type="text" id="excluir_ejercicios" placeholder="Ej: press militar, sentadilla... o deja en blanco"></div>
     <div class="field"><label>Fecha deseada de inicio (lunes siguiente a rellenar el formulario)</label><input type="date" id="fecha_inicio"><div class="hint">Tu entrenador la confirmará antes de activar el plan</div></div>
@@ -220,8 +220,8 @@
       <div class="step-sub">Esta sección me ayuda a entenderte como persona, no solo como atleta.</div>
     </div>
     <div class="field"><label>¿Cuáles crees que son tus puntos débiles y tus puntos fuertes? ¿Cómo te definirías como persona? (físicos y psicológicos) <span class="req">*</span></label><textarea id="mentalidad" style="min-height:100px" placeholder="Ej: Soy constante cuando me propongo algo, pero me cuesta la disciplina con la comida en situaciones sociales..."></textarea></div>
-    <div class="field"><label>¿Has trabajado antes con un entrenador? Si es sí, ¿qué tal la experiencia y por qué ya no continúas?</label><textarea id="historial_entrenador" placeholder="Ej: Sí, 3 meses online, pero no había seguimiento real..."></textarea></div>
-    <div class="field"><label>¿Qué buscas en un entrenador? ¿Qué es lo más importante para ti en este proceso?</label><textarea id="que_busca_entrenador" placeholder="Ej: Alguien que me entienda, que no me dé un plan genérico..."></textarea></div>
+    <div class="field"><label>¿Has trabajado antes con un entrenador? (escribe No si es tu primera vez) <span class="req">*</span> Si es sí, ¿qué tal la experiencia y por qué ya no continúas?</label><textarea id="historial_entrenador" placeholder="Ej: Sí, 3 meses online, pero no había seguimiento real..."></textarea></div>
+    <div class="field"><label>¿Qué buscas en un entrenador? <span class="req">*</span> ¿Qué es lo más importante para ti en este proceso?</label><textarea id="que_busca_entrenador" placeholder="Ej: Alguien que me entienda, que no me dé un plan genérico..."></textarea></div>
     <div class="field"><label>¿Te parece bien que subamos alguna captura o parte de tu proceso a Instagram? Obviamente sin comprometerte personalmente <span class="req">*</span></label>
       <div class="pills" id="igPills">
         <span class="pill" data-v="si">Sí, sin problema</span>
@@ -229,7 +229,7 @@
         <span class="pill" data-v="no">Prefiero que no</span>
       </div>
     </div>
-    <div class="field"><label>Escribe algo importante que no te hayamos preguntado. Puedes abrirte con todo lo que necesites.</label><textarea id="comentarios" placeholder="Cualquier cosa que quieras que sepa antes de empezar a trabajar contigo."></textarea></div>
+    <div class="field"><label>Escribe algo más que quieras que sepa (o escribe Nada) <span class="req">*</span>. Puedes abrirte con todo lo que necesites.</label><textarea id="comentarios" placeholder="Cualquier cosa que quieras que sepa antes de empezar a trabajar contigo."></textarea></div>
     <div class="nav-btns"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn btn-next" onclick="goTo(7)">Siguiente →</button></div>
   </div>
 
@@ -442,12 +442,20 @@ function validate(step){
   if(step===4){
     if(ST.comidas==null)return showErr('Selecciona cuántas comidas haces al día');
     if(!v('alimentacion_actual'))return showErr('Cuéntame qué comiste ayer');
+    if(!v('excluir_alimentos'))return showErr('Indica alimentos a excluir o escribe Ninguno');
+    if(!v('intolerancia_comida'))return showErr('Responde la pregunta sobre relación con la comida o escribe No');
   }
   if(step===5){
+    if(!v('patologia'))return showErr('Indica si tienes alguna patología o escribe Ninguna');
+    if(!v('medicacion'))return showErr('Indica si tomas medicación o escribe No');
     if(!v('lesiones'))return showErr('Indica tus lesiones o escribe Ninguna');
+    if(!v('fecha_inicio'))return showErr('Indica la fecha deseada de inicio');
   }
   if(step===6){
     if(!v('mentalidad'))return showErr('Cuéntame tus puntos fuertes y débiles');
+    if(!v('historial_entrenador'))return showErr('Responde si has trabajado antes con un entrenador o escribe No');
+    if(!v('que_busca_entrenador'))return showErr('¿Qué buscas en un entrenador?');
+    if(!v('comentarios'))return showErr('Escribe algo más o escribe Nada');
     if(!ST.ig_permiso)return showErr('Indica si te parece bien que compartamos tu proceso en Instagram');
   }
   return true;
