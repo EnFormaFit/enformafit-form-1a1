@@ -316,7 +316,18 @@
 
 <script>
 const BACKEND='https://enformafit-backend-production.up.railway.app';
-const KEY='ef_1a1_v2';
+const KEY='ef_1a1_v3';
+// Migrate from v2 if exists, but always reset step to 1
+(function(){
+  try{
+    var old=localStorage.getItem('ef_1a1_v2');
+    if(old&&!localStorage.getItem('ef_1a1_v3')){
+      var d=JSON.parse(old);
+      d.step=1; // Never restore a step > 1
+      localStorage.setItem('ef_1a1_v3',JSON.stringify(d));
+    }
+  }catch(e){}
+})();
 const TOTAL=8;
 const LABELS=['','Datos personales','Objetivos y estilo de vida','Entrenamiento','Nutrición','Salud y lesiones','Mentalidad','Medidas corporales','Fotos de inicio'];
 
@@ -340,7 +351,7 @@ function load(){
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
     if(!d.nombre)return;
     Object.assign(ST,d);
-    ST.step=1; // Always start at step 1 to avoid validation mismatch
+    ST.step=1; // ALWAYS start at step 1 — never restore step from storage
     const textIds=['nombre','email','telefono','fecha_nac','objetivo','actividad',
       'horas_sueno','estres','historial_entreno','preferencias_ejercicios',
       'alimentacion_actual','excluir_alimentos','intolerancia_comida',
