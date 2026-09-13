@@ -86,6 +86,7 @@
 </div>
 <div class="container">
   <div class="err-msg" id="errMsg"></div>
+  <div id="fix-step-wrap" style="display:none;text-align:center;margin:8px 0"><button onclick="fixStep()" style="background:none;border:none;color:#999;font-size:12px;text-decoration:underline;cursor:pointer">¿No puedes avanzar? Pulsa aquí para continuar</button></div>
 
   <!-- ═══ PASO 1: Datos personales ═══ -->
   <div class="step active" id="step1">
@@ -465,7 +466,10 @@ function delFoto(idx){
 }
 
 function v(id){return(document.getElementById(id)?.value||'').trim();}
-function showErr(msg){const el=document.getElementById('errMsg');el.textContent=msg;el.classList.add('show');window.scrollTo({top:0,behavior:'smooth'});return false;}
+function showErr(msg){const el=document.getElementById('errMsg');el.textContent=msg;el.classList.add('show');window.scrollTo({top:0,behavior:'smooth'});
+  if(msg&&msg.toLowerCase().includes('medid')){const fw=document.getElementById('fix-step-wrap');if(fw)fw.style.display='block';}
+  return false;}
+function fixStep(){try{var d=JSON.parse(localStorage.getItem(KEY)||'{}');d.step=1;localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}location.reload();}
 function hideErr(){document.getElementById('errMsg').classList.remove('show');}
 
 function validate(step){
