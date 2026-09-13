@@ -339,6 +339,7 @@ function load(){
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
     if(!d.nombre)return;
     Object.assign(ST,d);
+    ST.step=1; // Always start at step 1 to avoid validation mismatch
     const textIds=['nombre','email','telefono','fecha_nac','objetivo','actividad',
       'horas_sueno','estres','historial_entreno','preferencias_ejercicios',
       'alimentacion_actual','excluir_alimentos','intolerancia_comida',
