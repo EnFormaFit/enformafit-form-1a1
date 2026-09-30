@@ -539,7 +539,7 @@ function validate(step){
 }
 
 function goTo(n){
-  if(!validate(ST.step))return;
+  if(n > ST.step && !validate(ST.step))return; // Only validate when going forward
   // Hide ALL steps first to avoid overlap
   for(let i=1;i<=TOTAL;i++){
     const el=document.getElementById('step'+i);
